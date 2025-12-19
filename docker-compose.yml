@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    image: ecommerceproject/user-service:local
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./user-service/database.db:/app/database.db
+    restart: unless-stopped
+    networks:
+      - ecommerce-net
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    image: ecommerceproject/product-service:local
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./product-service/database.db:/app/database.db
+    restart: unless-stopped
+    networks:
+      - ecommerce-net
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: ecommerceproject/order-service:local
+    ports:
+      - "5003:5003"
+    volumes:
+      - ./order-service/database.db:/app/database.db
+    restart: unless-stopped
+    networks:
+      - ecommerce-net
+
+networks:
+  ecommerce-net:
+    driver: bridge

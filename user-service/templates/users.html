@@ -1,0 +1,15 @@
+<h2>All Users</h2>
+<a href="/">Home</a><br><br>
+
+<table border="1">
+    <tr>
+        <th>ID</th><th>Username</th><th>Email</th>
+    </tr>
+    {% for u in users %}
+    <tr>
+        <td>{{ u[0] }}</td>
+        <td>{{ u[1] }}</td>
+        <td>{{ u[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>

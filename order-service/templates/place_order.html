@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Place Order</title>
+</head>
+<body>
+
+    <h2>Place an Order</h2>
+
+    <form method="POST">
+
+        <label>Select User:</label><br>
+        <select name="username">
+            {% for u in users %}
+                <option value="{{ u }}">{{ u }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Select Product:</label><br>
+        <select name="product" id="product" onchange="updatePrice()">
+            {% for p in products %}
+                <option value="{{ p.name }}" data-price="{{ p.price }}">
+                    {{ p.name }} - ${{ p.price }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="hidden" name="price" id="price" value="{{ products[0].price }}">
+
+        <label>Quantity:</label><br>
+        <input type="number" name="quantity" value="1" min="1"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function updatePrice() {
+            var productSelect = document.getElementById("product");
+            var selectedOption = productSelect.options[productSelect.selectedIndex];
+            var price = selectedOption.getAttribute("data-price");
+            document.getElementById("price").value = price;
+        }
+    </script>
+
+</body>
+</html>
