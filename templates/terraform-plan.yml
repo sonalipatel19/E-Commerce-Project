@@ -1,0 +1,16 @@
+parameters:
+  displayName: 'Terraform Plan'
+  environmentServiceNameAzureRM: ''
+  workingDirectory: ''
+  varFile: ''
+
+steps:
+- task: TerraformTaskV4@4
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    provider: azurerm
+    command: plan
+    workingDirectory: ${{ parameters.workingDirectory }}
+    environmentServiceNameAzureRM: ${{ parameters.environmentServiceNameAzureRM }}
+    commandOptions: >
+        -var-file=${{ parameters.varFile }}

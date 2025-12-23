@@ -1,0 +1,17 @@
+parameters:
+  displayName: 'Terraform Apply'
+  environmentServiceNameAzureRM: ''
+  workingDirectory: ''
+  varFile: ''   # 👈 tfvars file (dev.tfvars / qa.tfvars / prod.tfvars)
+
+steps:
+  - task: TerraformTaskV4@4
+    displayName: ${{ parameters.displayName }}
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      environmentServiceNameAzureRM: ${{ parameters.environmentServiceNameAzureRM }}
+      workingDirectory: ${{ parameters.workingDirectory }}
+      commandOptions: >
+        --auto-approve
+        -var-file=${{ parameters.varFile }}

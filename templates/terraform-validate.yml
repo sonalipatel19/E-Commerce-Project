@@ -1,0 +1,13 @@
+parameters:
+  displayName: 'Terraform Validate'
+  environmentServiceNameAzureRM: ''
+  workingDirectory: ''
+
+steps:
+- task: TerraformTaskV4@4
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    provider: azurerm
+    command: validate
+    workingDirectory: ${{ parameters.workingDirectory }}
+    environmentServiceNameAzureRM: ${{ parameters.environmentServiceNameAzureRM }}

@@ -1,0 +1,94 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  environment: dev
+  tf_working_dir: terraform/env/dev
+  service_connection: azure-sp-connection
+
+stages:
+  - stage: 'Terraform_Dev'
+    displayName: 'Terraform Dev Deployment'
+    jobs:
+      - job: 'TerraformInit'
+        displayName: 'Initialize Terraform'
+        steps:
+          - template: templates/terraform-init.yml
+            parameters:
+              displayName: 'Terraform Init with Azure Backend'
+              backendServiceArm: $(service_connection)
+              workingDirectory: $(tf_working_dir)
+
+  - stage: TerraformValidate
+    displayName: 'Terraform Validate'
+    dependsOn: Terraform_Dev
+    condition: succeeded()
+    jobs:
+      - job: 'TerraformValidate'
+        displayName: 'Validate Terraform Files'
+        steps:
+          - template: templates/terraform-init.yml
+            parameters:
+              displayName: 'Terraform Init before Validate'
+              backendServiceArm: $(service_connection)
+              workingDirectory: $(tf_working_dir)
+          
+          - template: templates/terraform-validate.yml
+            parameters:
+              displayName: 'Terraform Validate'
+              environmentServiceNameAzureRM: $(service_connection)
+              workingDirectory: $(tf_working_dir)
+
+  - stage: TerraformPlan
+    displayName: 'Terraform Plan'
+    dependsOn: TerraformValidate
+    condition: succeeded()
+    jobs:
+      - job: 'TerraformPlan'
+        displayName: 'Plan Terraform Deployment'
+        steps:
+          - template: templates/terraform-init.yml
+            parameters:
+              displayName: 'Terraform Init before Plan'
+              backendServiceArm: $(service_connection)
+              workingDirectory: $(tf_working_dir)
+
+          - template: templates/terraform-plan.yml
+            parameters:
+              displayName: 'Terraform Plan'
+              environmentServiceNameAzureRM: $(service_connection)
+              workingDirectory: $(tf_working_dir)
+              varFile: dev.tfvars
+
+  - stage: TerraformApply
+    displayName: 'Terraform Apply - Dev'
+    dependsOn: TerraformPlan
+    condition: succeeded()
+    jobs:
+    - job: TerraformApply
+      displayName: 'Apply Terraform Deployment'
+      steps:
+        - template: templates/terraform-init.yml
+          parameters:
+            displayName: 'Terraform Init before Apply'
+            backendServiceArm: $(service_connection)
+            workingDirectory: $(tf_working_dir)
+
+        - template: templates/terraform-apply.yml
+          parameters:
+            displayName: 'Terraform Apply'
+            environmentServiceNameAzureRM: $(service_connection)
+            workingDirectory: $(tf_working_dir)
+            varFile: dev.tfvars
+            
+              
+
+

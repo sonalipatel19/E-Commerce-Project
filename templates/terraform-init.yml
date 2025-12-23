@@ -1,0 +1,23 @@
+parameters:
+  displayName: 'Terraform Init'
+  backendServiceArm: ''
+  workingDirectory: ''
+
+steps:
+  - task: TerraformInstaller@1
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: TerraformTaskV4@4
+    displayName: ${{ parameters.displayName }}
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: ${{ parameters.backendServiceArm }}
+      workingDirectory: ${{ parameters.workingDirectory }}
+      backendAzureRmResourceGroupName: 'tfstate-rg'
+      backendAzureRmStorageAccountName: 'storage12b'
+      backendAzureRmContainerName: 'terraform'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+ 
