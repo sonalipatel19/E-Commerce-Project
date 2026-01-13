@@ -1,10 +1,9 @@
-version: "3.8"
 services:
   user-service:
     build:
       context: ./user-service
       dockerfile: Dockerfile
-    image: ecommerceproject/user-service:local
+    image: E-COMMERCEPROJECT/user-service:local
     ports:
       - "5001:5001"
     volumes:
@@ -17,7 +16,7 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    image: ecommerceproject/product-service:local
+    image: E-COMMERCEPROJECT/product-service:local
     ports:
       - "5002:5002"
     volumes:
@@ -30,7 +29,7 @@ services:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-    image: ecommerceproject/order-service:local
+    image: E-COMMERCEPROJECT/order-service:local
     ports:
       - "5003:5003"
     volumes:

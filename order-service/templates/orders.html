@@ -1,32 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Orders</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 900px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            background-color: #edf2f7;
+            color: #333;
+            font-weight: bold;
+            border: 1px solid #cbd5e0;
+            transition: background 0.3s ease;
+        }
+
+        .home-link:hover {
+            background-color: #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #667eea;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        tr:hover {
+            background-color: #edf2f7;
+        }
+
+        td {
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>All Orders</h2>
-    <a href="/">Home</a><br><br>
+    <div class="container">
+        <h2>All Orders</h2>
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Total Price</th>
-        </tr>
+        <a href="/" class="home-link">← Back to Home</a>
 
-        {% for o in orders %}
-        <tr>
-            <td>{{ o[0] }}</td>
-            <td>{{ o[1] }}</td>
-            <td>{{ o[2] }}</td>
-            <td>{{ o[3] }}</td>
-            <td>${{ o[4] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+
+            {% for o in orders %}
+            <tr>
+                <td>{{ o[0] }}</td>
+                <td>{{ o[1] }}</td>
+                <td>{{ o[2] }}</td>
+                <td>{{ o[3] }}</td>
+                <td>${{ o[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 </body>
 </html>
