@@ -1,11 +1,25 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import os
 
 app = Flask(__name__)
 
+ENV = os.getenv("ENV", "local")
+DB_PATH = os.getenv("SQLITE_DB_PATH", "database.db")
+
+def get_db_connection():
+    if ENV == "local":
+        return sqlite3.connect(DB_PATH)
+    else:
+        # Placeholder for Azure SQL / other DB
+        raise Exception("Azure SQL not configured yet")
+
 # Initialize DB
 def init_db():
-    conn = sqlite3.connect("database.db")
+    if ENV != "local":
+        return 
+
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS orders (
@@ -33,7 +47,7 @@ def place_order():
 
         total = price * quantity
 
-        conn = sqlite3.connect("database.db")
+        conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO orders (username, product_name, quantity, total_price) VALUES (?, ?, ?, ?)",
@@ -56,7 +70,7 @@ def place_order():
 
 @app.route("/orders")
 def orders():
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM orders")
     rows = cursor.fetchall()
@@ -66,4 +80,4 @@ def orders():
 
 if __name__ == "__main__":
     init_db()
-    app.run(host="0.0.0.0", port=5003, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

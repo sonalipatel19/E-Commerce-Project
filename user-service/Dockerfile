@@ -18,11 +18,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 5001
+EXPOSE 5000
 
 # Healthcheck (optional)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://127.0.0.1:5001/ || exit 1
+  CMD curl -f http://127.0.0.1:5000/ || exit 1
 
 # Use gunicorn for production; app.py defines Flask app as `app`
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:app", "--workers", "3", "--threads", "2"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--workers", "2", "--threads", "2"]

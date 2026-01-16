@@ -10,9 +10,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 5003
+EXPOSE 5000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://127.0.0.1:5003/ || exit 1
+  CMD curl -f http://127.0.0.1:5000/ || exit 1
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5003", "app:app", "--workers", "3", "--threads", "2"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--workers", "2", "--threads", "2"]
